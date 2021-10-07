@@ -2,6 +2,7 @@ package Datalayer
 
 import (
 	"RokuProject-Back-End/Models"
+	"fmt"
 	"log"
 )
 
@@ -104,10 +105,11 @@ func GetAllProjectsFromUser(UserId string) Models.ProjectUsers {
 	for result.Next() {
 		var user Models.ProjectUser
 
-		err := result.Scan(&user.ProjectId, &user.ProjectId)
+		err := result.Scan(&user.ProjectId, &user.UserId)
 		if err != nil {
 			log.Fatal(err)
 		}
+		fmt.Println(user)
 		projectUsers = append(projectUsers, user)
 	}
 

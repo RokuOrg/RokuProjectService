@@ -6,8 +6,14 @@ import (
 	"github.com/segmentio/ksuid"
 )
 
-func AddProjectList(newProjectList Models.CreateProjectList) Models.Message {
-	project := Datalayer.GetProjectFromId(newProjectList.ProjectId)
+func AddProjectList(newProjectList Models.CreateProjectList, projectId string, UserId string) (Models.Message, string) {
+	projectUser := Datalayer.GetProjectUser(Models.ProjectUser{UserId: UserId, ProjectId: projectId})
+
+	if projectUser.UserId == "" {
+		return Models.Message{}, "Error User not in this project"
+	}
+
+	project := Datalayer.GetProjectFromId(projectId)
 
 	var projectList = Models.ProjectList{
 		Id:       ksuid.New().String(),
@@ -15,9 +21,9 @@ func AddProjectList(newProjectList Models.CreateProjectList) Models.Message {
 		Position: len(project.Project),
 	}
 
-	res := Datalayer.AddProjectList(projectList, newProjectList.ProjectId)
+	res := Datalayer.AddProjectList(projectList, projectId)
 
-	return res
+	return res, ""
 }
 
 func RemoveProjectList() {

@@ -35,7 +35,6 @@ type ProjectItem struct {
 
 type CreateProject struct {
 	Name     string `json:"name"`
-	Token    string `json:"Token"`
 	Template bool   `json:"template"`
 }
 
@@ -45,28 +44,10 @@ type Message struct {
 }
 
 type CreateProjectList struct {
-	ProjectId string `json:"projectId"`
-	Name      string `json:"name"`
-	Token     string `json:"token"`
+	Name string `json:"name"`
 }
 
 type CreateProjectItem struct {
-	ProjectId   string `json:"projectId"`
-	ListId      string `json:"listId"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	Token       string `json:"token"`
-}
-
-type ResponseMessage struct {
-	Succes bool   `json:"succes"`
-	Object Object `json:"object"`
-}
-
-type Object struct {
-	Token    string `json:"token"`
-	Username string `json:"username"`
-	Error    string `json:"error"`
-	Id       int    `json:"id"`
-	Message  string `json:"message"`
 }

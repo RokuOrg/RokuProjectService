@@ -12,6 +12,13 @@ import (
 func GetProjectList(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
+	Id := r.Header.Get("X-User-Validated")
+
+	if Id == "" {
+		http.Error(w, "User not validated", http.StatusUnauthorized)
+		return
+	}
+
 	res := LogicLayer.GetProjectList(vars["id"])
 
 	json.NewEncoder(w).Encode(res)
@@ -19,6 +26,7 @@ func GetProjectList(w http.ResponseWriter, r *http.Request) {
 
 func AddProjectList(w http.ResponseWriter, r *http.Request) {
 	var ProjectList Models.CreateProjectList
+	vars := mux.Vars(r)
 
 	err := json.NewDecoder(r.Body).Decode(&ProjectList)
 
@@ -27,7 +35,19 @@ func AddProjectList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := LogicLayer.AddProjectList(ProjectList)
+	UserId := r.Header.Get("X-User-Validated")
+
+	if UserId == "" {
+		http.Error(w, "User not validated", http.StatusUnauthorized)
+		return
+	}
+
+	res, error := LogicLayer.AddProjectList(ProjectList, vars["project"], UserId)
+
+	if error != "" {
+		http.Error(w, error, http.StatusUnauthorized)
+		return
+	}
 
 	json.NewEncoder(w).Encode(res)
 }

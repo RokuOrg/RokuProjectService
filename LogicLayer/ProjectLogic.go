@@ -3,6 +3,7 @@ package LogicLayer
 import (
 	"RokuProject-Back-End/Datalayer"
 	"RokuProject-Back-End/Models"
+	"fmt"
 	"github.com/segmentio/ksuid"
 )
 
@@ -32,14 +33,12 @@ func ProjectListTemplate() Models.ProjectLists {
 	return ProjectList
 }
 
-func CreateProject(Token string, ProjectName string, template bool) Models.Message {
-
-	//verify Token
+func CreateProject(UserId string, ProjectName string, template bool) Models.Message {
 
 	project := Models.Project{
 		Name:    ProjectName,
 		Id:      ksuid.New().String(),
-		OwnerId: Token,
+		OwnerId: UserId,
 		Project: nil,
 	}
 
@@ -68,12 +67,32 @@ func CreateProject(Token string, ProjectName string, template bool) Models.Messa
 		}
 	}
 
-	res = Datalayer.AddProjectUser(Models.ProjectUser{UserId: Token, ProjectId: project.Id})
+	res = Datalayer.AddProjectUser(Models.ProjectUser{UserId: UserId, ProjectId: project.Id})
 
 	return res
 }
 
+func GetProjectByUser(ProjectId string, UserId string) (Models.Project, string) {
+
+	ProjectUser := Datalayer.GetProjectUser(Models.ProjectUser{UserId: UserId, ProjectId: ProjectId})
+	fmt.Println(ProjectUser)
+	if ProjectUser.ProjectId == "" {
+		return Models.Project{}, "User not part of project"
+	}
+
+	project := Datalayer.GetProjectFromId(ProjectId)
+
+	project.Project = Datalayer.GetProjectListsFromProjectId(ProjectId)
+
+	for i := range project.Project {
+		project.Project[i].Items = Datalayer.GetProjectItemsFromProjectList(project.Project[i].Id)
+	}
+
+	return project, ""
+}
+
 func GetProject(ProjectId string) Models.Project {
+
 	project := Datalayer.GetProjectFromId(ProjectId)
 
 	project.Project = Datalayer.GetProjectListsFromProjectId(ProjectId)
