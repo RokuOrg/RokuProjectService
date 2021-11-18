@@ -28,9 +28,10 @@ type ProjectList struct {
 type ProjectItems []ProjectItem
 
 type ProjectItem struct {
-	Position    int    `json:"position"`
+	Id          string `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
+	Position    int    `json:"position"`
 }
 
 type CreateProject struct {
@@ -48,6 +49,6 @@ type CreateProjectList struct {
 }
 
 type CreateProjectItem struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
+	Title    string `json:"title"`
+	Position int    `json:"position"`
 }

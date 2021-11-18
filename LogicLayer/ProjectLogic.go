@@ -3,7 +3,6 @@ package LogicLayer
 import (
 	"RokuProject-Back-End/Datalayer"
 	"RokuProject-Back-End/Models"
-	"fmt"
 	"github.com/segmentio/ksuid"
 )
 
@@ -75,7 +74,7 @@ func CreateProject(UserId string, ProjectName string, template bool) Models.Mess
 func GetProjectByUser(ProjectId string, UserId string) (Models.Project, string) {
 
 	ProjectUser := Datalayer.GetProjectUser(Models.ProjectUser{UserId: UserId, ProjectId: ProjectId})
-	fmt.Println(ProjectUser)
+
 	if ProjectUser.ProjectId == "" {
 		return Models.Project{}, "User not part of project"
 	}

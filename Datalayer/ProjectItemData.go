@@ -33,7 +33,6 @@ func GetProjectItemsFromProjectList(Id string) Models.ProjectItems {
 
 	if err != nil {
 		log.Fatal(err)
-
 	}
 
 	for result.Next() {
@@ -47,4 +46,26 @@ func GetProjectItemsFromProjectList(Id string) Models.ProjectItems {
 	}
 
 	return projectItems
+}
+
+func GetProjectItem(id string) Models.ProjectItem {
+
+	Connect()
+	defer db.Close()
+
+	var item Models.ProjectItem
+	result, err := db.Query("SELECT * FROM ProjectItem WHERE Id = ?", id)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for result.Next() {
+		var projlist string
+		err := result.Scan(&item.Id, &item.Title, &item.Description, projlist, &item.Position)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	return item
 }
