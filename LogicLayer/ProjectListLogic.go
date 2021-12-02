@@ -2,20 +2,20 @@ package LogicLayer
 
 import (
 	"RokuProject-Back-End/Datalayer"
-	"RokuProject-Back-End/Models"
+	"RokuProject-Back-End/Logic"
 	"github.com/segmentio/ksuid"
 )
 
-func AddProjectList(newProjectList Models.CreateProjectList, projectId string, UserId string) (Models.Message, string) {
-	projectUser := Datalayer.GetProjectUser(Models.ProjectUser{UserId: UserId, ProjectId: projectId})
+func AddProjectList(newProjectList Logic.CreateProjectList, projectId string, UserId string) (Logic.Message, string) {
+	projectUser := Datalayer.GetProjectUser(Logic.ProjectUser{UserId: UserId, ProjectId: projectId})
 
 	if projectUser.UserId == "" {
-		return Models.Message{}, "Error User not in this project"
+		return Logic.Message{}, "Error User not in this project"
 	}
 
 	project := Datalayer.GetProjectFromId(projectId)
 
-	var projectList = Models.ProjectList{
+	var projectList = Logic.ProjectList{
 		Id:       ksuid.New().String(),
 		Name:     newProjectList.Name,
 		Position: len(project.Project),
@@ -34,7 +34,7 @@ func MoveProjectItems() {
 
 }
 
-func GetProjectList(Id string) Models.ProjectList {
+func GetProjectList(Id string) Logic.ProjectList {
 
-	return Models.ProjectList{}
+	return Logic.ProjectList{}
 }

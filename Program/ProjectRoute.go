@@ -1,22 +1,22 @@
-package Routes
+package Program
 
 import (
+	"RokuProject-Back-End/Logic"
 	"RokuProject-Back-End/LogicLayer"
-	"RokuProject-Back-End/Models"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-func ProjectsPage(w http.ResponseWriter, r *http.Request) {
+func (a *App) ProjectsPage(w http.ResponseWriter, r *http.Request) {
 	projects := LogicLayer.GetAllProjects()
 
 	json.NewEncoder(w).Encode(projects)
 }
 
-func CreateProject(w http.ResponseWriter, r *http.Request) {
-	var createProject Models.CreateProject
+func (a *App) CreateProject(w http.ResponseWriter, r *http.Request) {
+	var createProject Logic.CreateProject
 
 	uId := r.Header.Get("X-User-Validated")
 
@@ -36,7 +36,7 @@ func CreateProject(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
-func GetProjectById(w http.ResponseWriter, r *http.Request) {
+func (a *App) GetProjectById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	Id := r.Header.Get("X-User-Validated")
@@ -56,7 +56,7 @@ func GetProjectById(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(project)
 }
 
-func GetProjectsByUserId(w http.ResponseWriter, r *http.Request) {
+func (a *App) GetProjectsByUserId(w http.ResponseWriter, r *http.Request) {
 	Id := r.Header.Get("X-User-Validated")
 
 	if Id == "" {
@@ -69,10 +69,10 @@ func GetProjectsByUserId(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(projects)
 }
 
-func RemoveProject(w http.ResponseWriter, r *http.Request) {
+func (a *App) RemoveProject(w http.ResponseWriter, r *http.Request) {
 	log.Fatal("Method not implemented")
 }
 
-func UpdateProject(w http.ResponseWriter, r *http.Request) {
+func (a *App) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	log.Fatal("Method not implemented")
 }

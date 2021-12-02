@@ -2,39 +2,39 @@ package LogicLayer
 
 import (
 	"RokuProject-Back-End/Datalayer"
-	"RokuProject-Back-End/Models"
+	"RokuProject-Back-End/Logic"
 	"github.com/segmentio/ksuid"
 )
 
-func ProjectListTemplate() Models.ProjectLists {
+func ProjectListTemplate() Logic.ProjectLists {
 
-	ProjectList := Models.ProjectLists{
-		Models.ProjectList{
+	ProjectList := Logic.ProjectLists{
+		Logic.ProjectList{
 			Id:       ksuid.New().String(),
 			Name:     "To Do",
 			Position: 0,
-			Items:    Models.ProjectItems{},
+			Items:    Logic.ProjectItems{},
 		},
-		Models.ProjectList{
+		Logic.ProjectList{
 			Id:       ksuid.New().String(),
 			Name:     "In Progress",
 			Position: 1,
-			Items:    Models.ProjectItems{},
+			Items:    Logic.ProjectItems{},
 		},
-		Models.ProjectList{
+		Logic.ProjectList{
 			Id:       ksuid.New().String(),
 			Name:     "Done",
 			Position: 2,
-			Items:    Models.ProjectItems{},
+			Items:    Logic.ProjectItems{},
 		},
 	}
 
 	return ProjectList
 }
 
-func CreateProject(UserId string, ProjectName string, template bool) Models.Message {
+func CreateProject(UserId string, ProjectName string, template bool) Logic.Message {
 
-	project := Models.Project{
+	project := Logic.Project{
 		Name:    ProjectName,
 		Id:      ksuid.New().String(),
 		OwnerId: UserId,
@@ -66,17 +66,17 @@ func CreateProject(UserId string, ProjectName string, template bool) Models.Mess
 		}
 	}
 
-	res = Datalayer.AddProjectUser(Models.ProjectUser{UserId: UserId, ProjectId: project.Id})
+	res = Datalayer.AddProjectUser(Logic.ProjectUser{UserId: UserId, ProjectId: project.Id})
 
 	return res
 }
 
-func GetProjectByUser(ProjectId string, UserId string) (Models.Project, string) {
+func GetProjectByUser(ProjectId string, UserId string) (Logic.Project, string) {
 
-	ProjectUser := Datalayer.GetProjectUser(Models.ProjectUser{UserId: UserId, ProjectId: ProjectId})
+	ProjectUser := Datalayer.GetProjectUser(Logic.ProjectUser{UserId: UserId, ProjectId: ProjectId})
 
 	if ProjectUser.ProjectId == "" {
-		return Models.Project{}, "User not part of project"
+		return Logic.Project{}, "User not part of project"
 	}
 
 	project := Datalayer.GetProjectFromId(ProjectId)
@@ -90,7 +90,7 @@ func GetProjectByUser(ProjectId string, UserId string) (Models.Project, string) 
 	return project, ""
 }
 
-func GetProject(ProjectId string) Models.Project {
+func GetProject(ProjectId string) Logic.Project {
 
 	project := Datalayer.GetProjectFromId(ProjectId)
 
@@ -109,9 +109,9 @@ func MoveProjectLists() {
 
 //Functions under this comment are for Multiple Projects
 
-func GetProjectsFromUser(userId string) Models.Projects {
+func GetProjectsFromUser(userId string) Logic.Projects {
 	projectUsers := Datalayer.GetAllProjectsFromUser(userId)
-	var projects Models.Projects
+	var projects Logic.Projects
 
 	for i := range projectUsers {
 		projects = append(projects, GetProject(projectUsers[i].ProjectId))
@@ -119,9 +119,9 @@ func GetProjectsFromUser(userId string) Models.Projects {
 	return projects
 }
 
-func GetAllProjects() Models.Projects {
+func GetAllProjects() Logic.Projects {
 	project1 := Datalayer.GetAllProjects()
-	var projects Models.Projects
+	var projects Logic.Projects
 
 	for i := range project1 {
 		projects = append(projects, GetProject(project1[i].Id))

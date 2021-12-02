@@ -1,15 +1,15 @@
-package Routes
+package Program
 
 import (
+	"RokuProject-Back-End/Logic"
 	"RokuProject-Back-End/LogicLayer"
-	"RokuProject-Back-End/Models"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-func GetProjectList(w http.ResponseWriter, r *http.Request) {
+func (a *App) GetProjectList(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	Id := r.Header.Get("X-User-Validated")
@@ -24,9 +24,9 @@ func GetProjectList(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
-func AddProjectList(w http.ResponseWriter, r *http.Request) {
+func (a *App) AddProjectList(w http.ResponseWriter, r *http.Request) {
 
-	var ProjectList Models.CreateProjectList
+	var ProjectList Logic.CreateProjectList
 	vars := mux.Vars(r)
 
 	err := json.NewDecoder(r.Body).Decode(&ProjectList)
@@ -53,10 +53,10 @@ func AddProjectList(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
-func RemoveProjectList(w http.ResponseWriter, r *http.Request) {
+func (a *App) RemoveProjectList(w http.ResponseWriter, r *http.Request) {
 	log.Fatal("Method not implemented")
 }
 
-func UpdateProjectList(w http.ResponseWriter, r *http.Request) {
+func (a *App) UpdateProjectList(w http.ResponseWriter, r *http.Request) {
 	log.Fatal("Method not implemented")
 }

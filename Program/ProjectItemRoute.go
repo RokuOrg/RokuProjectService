@@ -1,15 +1,15 @@
-package Routes
+package Program
 
 import (
+	"RokuProject-Back-End/Logic"
 	"RokuProject-Back-End/LogicLayer"
-	"RokuProject-Back-End/Models"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-func GetProjectItem(w http.ResponseWriter, r *http.Request) {
+func (a *App) GetProjectItem(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	Id := r.Header.Get("X-User-Validated")
@@ -23,8 +23,8 @@ func GetProjectItem(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
-func AddProjectItem(w http.ResponseWriter, r *http.Request) {
-	var createItem Models.CreateProjectItem
+func (a *App) AddProjectItem(w http.ResponseWriter, r *http.Request) {
+	var createItem Logic.CreateProjectItem
 
 	err := json.NewDecoder(r.Body).Decode(&createItem)
 
@@ -50,10 +50,10 @@ func AddProjectItem(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
-func RemoveProjectItem(w http.ResponseWriter, r *http.Request) {
+func (a *App) RemoveProjectItem(w http.ResponseWriter, r *http.Request) {
 	log.Fatal("Method not implemented")
 }
 
-func UpdateProjectItem(w http.ResponseWriter, r *http.Request) {
+func (a *App) UpdateProjectItem(w http.ResponseWriter, r *http.Request) {
 	log.Fatal("Method not implemented")
 }

@@ -1,12 +1,12 @@
 package Datalayer
 
 import (
-	"RokuProject-Back-End/Models"
+	"RokuProject-Back-End/Logic"
 	"fmt"
 	"log"
 )
 
-func AddProjectUser(projectUser Models.ProjectUser) Models.Message {
+func AddProjectUser(projectUser Logic.ProjectUser) Logic.Message {
 	Connect()
 	defer db.Close()
 
@@ -18,13 +18,13 @@ func AddProjectUser(projectUser Models.ProjectUser) Models.Message {
 
 	defer result.Close()
 
-	return Models.Message{
+	return Logic.Message{
 		Success: true,
 		Value:   "Added projectUser",
 	}
 }
 
-func RemoveProjectUser(projectUser Models.ProjectUser) Models.Message {
+func RemoveProjectUser(projectUser Logic.ProjectUser) Logic.Message {
 	Connect()
 	defer db.Close()
 
@@ -36,17 +36,17 @@ func RemoveProjectUser(projectUser Models.ProjectUser) Models.Message {
 
 	defer result.Close()
 
-	return Models.Message{
+	return Logic.Message{
 		Success: true,
 		Value:   "Deleted projectUser",
 	}
 }
 
-func GetProjectUser(projectUser Models.ProjectUser) Models.ProjectUser {
+func GetProjectUser(projectUser Logic.ProjectUser) Logic.ProjectUser {
 	Connect()
 	defer db.Close()
 
-	var User Models.ProjectUser
+	var User Logic.ProjectUser
 
 	result, err := db.Query("SELECT * FROM ProjectUser WHERE ProjectId = ? AND UserId = ?", projectUser.ProjectId, projectUser.UserId)
 
@@ -64,12 +64,12 @@ func GetProjectUser(projectUser Models.ProjectUser) Models.ProjectUser {
 	return User
 }
 
-func GetProjectUsersByUserId(UserId string) Models.ProjectUsers {
+func GetProjectUsersByUserId(UserId string) Logic.ProjectUsers {
 
 	Connect()
 	defer db.Close()
 
-	var Users Models.ProjectUsers
+	var Users Logic.ProjectUsers
 
 	result, err := db.Query("SELECT * FROM ProjectUser WHERE UserId = ?", UserId)
 
@@ -78,7 +78,7 @@ func GetProjectUsersByUserId(UserId string) Models.ProjectUsers {
 	}
 
 	for result.Next() {
-		var User Models.ProjectUser
+		var User Logic.ProjectUser
 		err := result.Scan(&User.ProjectId, &User.UserId)
 		if err != nil {
 			log.Fatal(err)
@@ -89,12 +89,12 @@ func GetProjectUsersByUserId(UserId string) Models.ProjectUsers {
 	return Users
 }
 
-func GetAllProjectsFromUser(UserId string) Models.ProjectUsers {
+func GetAllProjectsFromUser(UserId string) Logic.ProjectUsers {
 
 	Connect()
 	defer db.Close()
 
-	var projectUsers Models.ProjectUsers
+	var projectUsers Logic.ProjectUsers
 
 	result, err := db.Query("SELECT * FROM ProjectUser WHERE UserId = ?", UserId)
 
@@ -103,7 +103,7 @@ func GetAllProjectsFromUser(UserId string) Models.ProjectUsers {
 	}
 
 	for result.Next() {
-		var user Models.ProjectUser
+		var user Logic.ProjectUser
 
 		err := result.Scan(&user.ProjectId, &user.UserId)
 		if err != nil {

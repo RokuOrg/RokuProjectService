@@ -1,11 +1,11 @@
 package Datalayer
 
 import (
-	"RokuProject-Back-End/Models"
+	"RokuProject-Back-End/Logic"
 	"log"
 )
 
-func AddProjectList(list Models.ProjectList, ProjectId string) Models.Message {
+func AddProjectList(list Logic.ProjectList, ProjectId string) Logic.Message {
 
 	Connect()
 	defer db.Close()
@@ -18,25 +18,25 @@ func AddProjectList(list Models.ProjectList, ProjectId string) Models.Message {
 
 	defer result.Close()
 
-	return Models.Message{
+	return Logic.Message{
 		Success: true,
 		Value:   "Added projectList",
 	}
 }
 
-func GetProjectListsFromProjectId(Id string) Models.ProjectLists {
+func GetProjectListsFromProjectId(Id string) Logic.ProjectLists {
 	Connect()
 	defer db.Close()
-	var projectLists Models.ProjectLists
+	var projectLists Logic.ProjectLists
 	result, err := db.Query("SELECT * FROM ProjectList WHERE ProjectId = ?", Id)
 
 	if err != nil {
 		log.Fatal(err)
-		return Models.ProjectLists{}
+		return Logic.ProjectLists{}
 	}
 
 	for result.Next() {
-		var list Models.ProjectList
+		var list Logic.ProjectList
 		var projectId string
 		err := result.Scan(&list.Id, &list.Name, &projectId, &list.Position)
 		if err != nil {
@@ -48,7 +48,7 @@ func GetProjectListsFromProjectId(Id string) Models.ProjectLists {
 	return projectLists
 }
 
-func RemoveProjectList(ProjectId string) Models.Message {
+func RemoveProjectList(ProjectId string) Logic.Message {
 
 	Connect()
 	defer db.Close()
@@ -61,7 +61,7 @@ func RemoveProjectList(ProjectId string) Models.Message {
 
 	defer result.Close()
 
-	return Models.Message{
+	return Logic.Message{
 		Success: true,
 		Value:   "Removed ProjectList",
 	}

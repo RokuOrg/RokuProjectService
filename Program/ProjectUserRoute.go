@@ -1,14 +1,14 @@
-package Routes
+package Program
 
 import (
+	"RokuProject-Back-End/Logic"
 	"RokuProject-Back-End/LogicLayer"
-	"RokuProject-Back-End/Models"
 	"encoding/json"
 	"net/http"
 )
 
-func CreateProjectUser(w http.ResponseWriter, r *http.Request) {
-	var ProjectUser Models.ProjectUser
+func (a *App) CreateProjectUser(w http.ResponseWriter, r *http.Request) {
+	var ProjectUser Logic.ProjectUser
 
 	err := json.NewDecoder(r.Body).Decode(&ProjectUser)
 
@@ -22,8 +22,8 @@ func CreateProjectUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
-func RemoveUserFromProject(w http.ResponseWriter, r *http.Request) {
-	var ProjectUser Models.ProjectUser
+func (a *App) RemoveUserFromProject(w http.ResponseWriter, r *http.Request) {
+	var ProjectUser Logic.ProjectUser
 
 	err := json.NewDecoder(r.Body).Decode(&ProjectUser)
 

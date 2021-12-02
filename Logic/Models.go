@@ -1,4 +1,4 @@
-package Models
+package Logic
 
 type ProjectUsers []ProjectUser
 
@@ -8,13 +8,6 @@ type ProjectUser struct {
 }
 
 type Projects []Project
-
-type Project struct {
-	Id      string       `json:"id"`
-	OwnerId string       `json:"userId"`
-	Name    string       `json:"name"`
-	Project ProjectLists `json:"project"`
-}
 
 type ProjectLists []ProjectList
 

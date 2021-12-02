@@ -2,23 +2,23 @@ package LogicLayer
 
 import (
 	"RokuProject-Back-End/Datalayer"
-	"RokuProject-Back-End/Models"
+	"RokuProject-Back-End/Logic"
 	"log"
 )
 
-func CreateProjectUser(user Models.ProjectUser) Models.Message {
+func CreateProjectUser(user Logic.ProjectUser) Logic.Message {
 	res := Datalayer.AddProjectUser(user)
 
 	return res
 }
 
-func RemoveProjectUser(user Models.ProjectUser) Models.Message {
+func RemoveProjectUser(user Logic.ProjectUser) Logic.Message {
 	res := Datalayer.RemoveProjectUser(user)
 
 	return res
 }
 
-func GetProjectUser(ProjectUser Models.ProjectUser) Models.ProjectUser {
+func GetProjectUser(ProjectUser Logic.ProjectUser) Logic.ProjectUser {
 	user := Datalayer.GetProjectUser(ProjectUser)
 
 	return user
@@ -26,22 +26,22 @@ func GetProjectUser(ProjectUser Models.ProjectUser) Models.ProjectUser {
 
 //Functions under this comment are for Multiple ProjectUsers
 
-func RemoveProjectUsersFromProjectId() Models.Message {
+func RemoveProjectUsersFromProjectId() Logic.Message {
 	log.Fatal("method not implemented")
-	return Models.Message{}
+	return Logic.Message{}
 }
 
-func RemoveProjectUsersFromUserId() Models.Message {
+func RemoveProjectUsersFromUserId() Logic.Message {
 	log.Fatal("method not implemented")
-	return Models.Message{}
+	return Logic.Message{}
 }
 
-func GetProjectUsersFromProjectId() Models.ProjectUsers {
+func GetProjectUsersFromProjectId() Logic.ProjectUsers {
 	log.Fatal("method not implemented")
-	return Models.ProjectUsers{}
+	return Logic.ProjectUsers{}
 }
 
-func GetProjectUsersFromUserId() Models.ProjectUsers {
+func GetProjectUsersFromUserId() Logic.ProjectUsers {
 	log.Fatal("method not implemented")
-	return Models.ProjectUsers{}
+	return Logic.ProjectUsers{}
 }

@@ -1,11 +1,11 @@
 package Datalayer
 
 import (
-	"RokuProject-Back-End/Models"
+	"RokuProject-Back-End/Logic"
 	"log"
 )
 
-func AddProjectItem(Item Models.ProjectItem, ListId string) Models.Message {
+func AddProjectItem(Item Logic.ProjectItem, ListId string) Logic.Message {
 
 	Connect()
 	defer db.Close()
@@ -17,18 +17,18 @@ func AddProjectItem(Item Models.ProjectItem, ListId string) Models.Message {
 	}
 	defer result.Close()
 
-	return Models.Message{
+	return Logic.Message{
 		Success: true,
 		Value:   "Added projectList",
 	}
 }
 
-func GetProjectItemsFromProjectList(Id string) Models.ProjectItems {
+func GetProjectItemsFromProjectList(Id string) Logic.ProjectItems {
 
 	Connect()
 	defer db.Close()
 
-	var projectItems Models.ProjectItems
+	var projectItems Logic.ProjectItems
 	result, err := db.Query("SELECT * FROM ProjectItem WHERE ProjectListId = ?", Id)
 
 	if err != nil {
@@ -36,7 +36,7 @@ func GetProjectItemsFromProjectList(Id string) Models.ProjectItems {
 	}
 
 	for result.Next() {
-		var item Models.ProjectItem
+		var item Logic.ProjectItem
 		var projectListId string
 		err := result.Scan(&item.Title, &item.Description, &projectListId, &item.Position)
 		if err != nil {
@@ -48,12 +48,12 @@ func GetProjectItemsFromProjectList(Id string) Models.ProjectItems {
 	return projectItems
 }
 
-func GetProjectItem(id string) Models.ProjectItem {
+func GetProjectItem(id string) Logic.ProjectItem {
 
 	Connect()
 	defer db.Close()
 
-	var item Models.ProjectItem
+	var item Logic.ProjectItem
 	result, err := db.Query("SELECT * FROM ProjectItem WHERE Id = ?", id)
 
 	if err != nil {
