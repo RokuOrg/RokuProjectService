@@ -1,6 +1,7 @@
 package Program
 
 import (
+	"RokuProject-Back-End/Logic"
 	"database/sql"
 	"fmt"
 	"github.com/go-sql-driver/mysql"
@@ -15,12 +16,27 @@ func (a *App) Run(port string) {
 }
 
 type App struct {
-	Router *mux.Router
-	DB     *sql.DB
+	Router            *mux.Router
+	DB                *sql.DB
+	ProjectCollection *Logic.ProjectCollection
 }
 
 func BuildApp(cfg mysql.Config) *App {
 	a := App{}
+
+	var query string = cfg.User + ":" + cfg.Passwd + "@" + cfg.Net + "(" + cfg.Addr + ")/"
+
+	db, er := sql.Open("mysql", query)
+
+	if er != nil {
+		log.Fatal(er)
+	}
+
+	_, er = db.Exec("CREATE DATABASE IF NOT EXISTS " + cfg.DBName)
+
+	if er != nil {
+		log.Fatal(er)
+	}
 
 	var err error
 	a.DB, err = sql.Open("mysql", cfg.FormatDSN())
@@ -70,6 +86,8 @@ func BuildApp(cfg mysql.Config) *App {
 	a.Router.HandleFunc("/{project}/{list}/{item}", a.UpdateProjectItem).Methods("Update") //todo
 
 	a.Router.HandleFunc("/project/{id}", a.GetProjectById).Methods("Get") // test
+
+	a.ProjectCollection = Logic.BuildProjectCollection(a.DB)
 
 	return &a
 }

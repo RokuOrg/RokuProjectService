@@ -10,7 +10,7 @@ type ProjectCollection struct {
 	DB       *sql.DB
 }
 
-func (p *ProjectCollection) getProject() (Project, error) {
+func (p *ProjectCollection) GetProject(id string) (Project, error) {
 	if p.DB == nil {
 		return Project{}, errors.New("Collection not initialized")
 	}
@@ -18,7 +18,7 @@ func (p *ProjectCollection) getProject() (Project, error) {
 	return Project{}, errors.New("Not implemented")
 }
 
-func (p *ProjectCollection) deleteProject() error {
+func (p *ProjectCollection) DeleteProject() error {
 	if p.DB == nil {
 		return errors.New("Collection not initialized")
 	}
@@ -26,7 +26,7 @@ func (p *ProjectCollection) deleteProject() error {
 	return errors.New("Not implemented")
 }
 
-func (p *ProjectCollection) createProject() error {
+func (p *ProjectCollection) CreateProject() error {
 	if p.DB == nil {
 		return errors.New("Collection not initialized")
 	}
@@ -34,7 +34,7 @@ func (p *ProjectCollection) createProject() error {
 	return errors.New("Not implemented")
 }
 
-func (p *ProjectCollection) getProjects() ([]Project, error) {
+func (p *ProjectCollection) GetProjects() ([]Project, error) {
 	if p.DB == nil {
 		return []Project{}, errors.New("Collection not initialized")
 	}

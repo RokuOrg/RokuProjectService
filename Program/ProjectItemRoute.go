@@ -18,9 +18,16 @@ func (a *App) GetProjectItem(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "User not validated", http.StatusUnauthorized)
 		return
 	}
+	res, err := a.ProjectCollection.GetProject(vars["id"])
 
-	res := LogicLayer.GetProjectItem(vars["id"])
-	json.NewEncoder(w).Encode(res)
+	if err != nil {
+		http.Error(w, "Error: "+err.Error(), http.StatusInternalServerError)
+	}
+
+	e := json.NewEncoder(w).Encode(res)
+	if e != nil {
+		return
+	}
 }
 
 func (a *App) AddProjectItem(w http.ResponseWriter, r *http.Request) {
@@ -41,10 +48,10 @@ func (a *App) AddProjectItem(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "User not validated", http.StatusUnauthorized)
 	}
 
-	res, error := LogicLayer.AddProjectItem(UId, vars["project"], vars["list"], createItem)
+	res, e := LogicLayer.AddProjectItem(UId, vars["project"], vars["list"], createItem)
 
-	if error != "" {
-		log.Fatal(error)
+	if e != "" {
+		log.Fatal(e)
 	}
 
 	json.NewEncoder(w).Encode(res)
