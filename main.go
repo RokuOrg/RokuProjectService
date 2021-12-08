@@ -3,6 +3,7 @@ package main
 import (
 	"RokuProject-Back-End/Program"
 	"github.com/go-sql-driver/mysql"
+	"github.com/segmentio/ksuid"
 	"os"
 )
 
@@ -15,7 +16,8 @@ func main() {
 		DBName: "RokuProjects",
 	}
 
-	a := Program.BuildApp(cfg)
+	db := Program.CreateDbConnection(cfg)
+	a := Program.BuildApp(db, ksuid.New)
 
 	a.Run(":7001")
 }

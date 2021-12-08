@@ -1,32 +1,27 @@
 package Datalayer
 
 import (
-	"RokuProject-Back-End/Logic"
+	"RokuProject-Back-End/Models"
 	"log"
 )
 
-func AddProject(project Logic.Project) Logic.Message {
-
-	Connect()
-	result, err := db.Query("INSERT INTO Project (Id , Name, OwnerId) VALUES (?, ?, ?)", project.Id, project.Name, project.OwnerId)
+func (d *DatabaseLayer) AddProject(project Models.ProjectDAO) error {
+	result, err := d.DB.Query("INSERT INTO Project (Id , Name, OwnerId) VALUES (?, ?, ?)", project.Id, project.Name, project.OwnerId)
 
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	defer result.Close()
-	defer db.Close()
-	return Logic.Message{
-		Success: true,
-		Value:   "Added project",
-	}
+	defer d.DB.Close()
+	return nil
 }
 
-func GetProjectFromId(Id string) Logic.Project {
-	Connect()
-	defer db.Close()
-	var project Logic.Project
-	result, err := db.Query("SELECT * FROM Project WHERE Id = ?", Id)
+func (d *DatabaseLayer) GetProjectFromId(Id string) Models.ProjectDAO {
+
+	defer d.DB.Close()
+	var project Models.ProjectDAO
+	result, err := d.DB.Query("SELECT * FROM Project WHERE Id = ?", Id)
 
 	if err != nil {
 		log.Fatal(err)
@@ -42,20 +37,20 @@ func GetProjectFromId(Id string) Logic.Project {
 	return project
 }
 
-func GetAllProjects() Logic.Projects {
-	Connect()
-	defer db.Close()
+func (d *DatabaseLayer) GetAllProjects() []Models.ProjectDAO {
 
-	var projects Logic.Projects
+	defer d.DB.Close()
 
-	result, err := db.Query("SELECT * FROM Project")
+	var projects []Models.ProjectDAO
+
+	result, err := d.DB.Query("SELECT * FROM Project")
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for result.Next() {
-		var project Logic.Project
+		var project Models.ProjectDAO
 
 		err := result.Scan(&project.Id, &project.Name, &project.OwnerId)
 		if err != nil {

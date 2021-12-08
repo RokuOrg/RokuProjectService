@@ -1,11 +1,8 @@
 package Program
 
 import (
-	"RokuProject-Back-End/Logic"
-	"RokuProject-Back-End/LogicLayer"
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"log"
 	"net/http"
 )
 
@@ -30,6 +27,7 @@ func (a *App) GetProjectItem(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/*
 func (a *App) AddProjectItem(w http.ResponseWriter, r *http.Request) {
 	var createItem Logic.CreateProjectItem
 
@@ -60,7 +58,9 @@ func (a *App) AddProjectItem(w http.ResponseWriter, r *http.Request) {
 func (a *App) RemoveProjectItem(w http.ResponseWriter, r *http.Request) {
 	log.Fatal("Method not implemented")
 }
-
+*/
+/*
 func (a *App) UpdateProjectItem(w http.ResponseWriter, r *http.Request) {
 	log.Fatal("Method not implemented")
 }
+*/

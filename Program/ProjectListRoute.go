@@ -1,14 +1,11 @@
 package Program
 
 import (
-	"RokuProject-Back-End/Logic"
-	"RokuProject-Back-End/LogicLayer"
-	"encoding/json"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
+/*
 func (a *App) GetProjectList(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
@@ -52,7 +49,7 @@ func (a *App) AddProjectList(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(res)
 }
-
+*/
 func (a *App) RemoveProjectList(w http.ResponseWriter, r *http.Request) {
 	log.Fatal("Method not implemented")
 }

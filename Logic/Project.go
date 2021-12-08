@@ -1,21 +1,25 @@
 package Logic
 
 import (
-	"database/sql"
 	"errors"
 )
 
 type Project struct {
-	Id      string       `json:"id"`
-	OwnerId string       `json:"userId"`
-	Name    string       `json:"name"`
-	Project ProjectLists `json:"project"`
+	Id      string        `json:"id"`
+	OwnerId string        `json:"userId"`
+	Name    string        `json:"name"`
+	Project []ProjectList `json:"project"`
+	Users   []string      `json:"users"`
 }
 
-func (p *Project) updateProject(db *sql.DB) error {
+func (p *Project) UpdateProject() error {
 	return errors.New("Not implemented")
 }
 
-func (p *Project) addProjectList(db *sql.DB) error {
+func (p *Project) AddProjectList() error {
+	return errors.New("Not implemented")
+}
+
+func (p *Project) AddTemplate() error {
 	return errors.New("Not implemented")
 }

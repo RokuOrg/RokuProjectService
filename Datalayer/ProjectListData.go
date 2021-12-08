@@ -1,42 +1,38 @@
 package Datalayer
 
 import (
-	"RokuProject-Back-End/Logic"
+	"RokuProject-Back-End/Models"
 	"log"
 )
 
-func AddProjectList(list Logic.ProjectList, ProjectId string) Logic.Message {
+func (d *DatabaseLayer) AddProjectList(list Models.ProjectListDAO, ProjectId string) error {
 
-	Connect()
-	defer db.Close()
+	defer d.DB.Close()
 
-	result, err := db.Query("INSERT INTO ProjectList (Id , Name, ProjectId, Position ) VALUES (?, ?, ?, ?)", list.Id, list.Name, ProjectId, list.Position)
+	result, err := d.DB.Query("INSERT INTO ProjectList (Id , Name, ProjectId, Position ) VALUES (?, ?, ?, ?)", list.Id, list.Name, ProjectId, list.Position)
 
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	defer result.Close()
 
-	return Logic.Message{
-		Success: true,
-		Value:   "Added projectList",
-	}
+	return nil
 }
 
-func GetProjectListsFromProjectId(Id string) Logic.ProjectLists {
-	Connect()
-	defer db.Close()
-	var projectLists Logic.ProjectLists
-	result, err := db.Query("SELECT * FROM ProjectList WHERE ProjectId = ?", Id)
+func (d *DatabaseLayer) GetProjectListsFromProjectId(Id string) []Models.ProjectListDAO {
+
+	defer d.DB.Close()
+	var projectLists []Models.ProjectListDAO
+	result, err := d.DB.Query("SELECT * FROM ProjectList WHERE ProjectId = ?", Id)
 
 	if err != nil {
 		log.Fatal(err)
-		return Logic.ProjectLists{}
+		return []Models.ProjectListDAO{}
 	}
 
 	for result.Next() {
-		var list Logic.ProjectList
+		var list Models.ProjectListDAO
 		var projectId string
 		err := result.Scan(&list.Id, &list.Name, &projectId, &list.Position)
 		if err != nil {
@@ -48,21 +44,17 @@ func GetProjectListsFromProjectId(Id string) Logic.ProjectLists {
 	return projectLists
 }
 
-func RemoveProjectList(ProjectId string) Logic.Message {
+func (d *DatabaseLayer) RemoveProjectList(ProjectId string) error {
 
-	Connect()
-	defer db.Close()
+	defer d.DB.Close()
 
-	result, err := db.Query("DELETE FROM ProjectList WHERE ProjectId = ?", ProjectId)
+	result, err := d.DB.Query("DELETE FROM ProjectList WHERE ProjectId = ?", ProjectId)
 
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	defer result.Close()
 
-	return Logic.Message{
-		Success: true,
-		Value:   "Removed ProjectList",
-	}
+	return nil
 }

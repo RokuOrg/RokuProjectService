@@ -1,12 +1,6 @@
 package Program
 
-import (
-	"RokuProject-Back-End/Logic"
-	"RokuProject-Back-End/LogicLayer"
-	"encoding/json"
-	"net/http"
-)
-
+/*
 func (a *App) CreateProjectUser(w http.ResponseWriter, r *http.Request) {
 	var ProjectUser Logic.ProjectUser
 
@@ -35,4 +29,4 @@ func (a *App) RemoveUserFromProject(w http.ResponseWriter, r *http.Request) {
 	res := LogicLayer.RemoveProjectUser(ProjectUser)
 
 	json.NewEncoder(w).Encode(res)
-}
+}*/

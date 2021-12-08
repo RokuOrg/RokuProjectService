@@ -1,11 +1,6 @@
 package LogicLayer
 
-import (
-	"RokuProject-Back-End/Datalayer"
-	"RokuProject-Back-End/Logic"
-	"log"
-)
-
+/*
 func CreateProjectUser(user Logic.ProjectUser) Logic.Message {
 	res := Datalayer.AddProjectUser(user)
 
@@ -44,4 +39,4 @@ func GetProjectUsersFromProjectId() Logic.ProjectUsers {
 func GetProjectUsersFromUserId() Logic.ProjectUsers {
 	log.Fatal("method not implemented")
 	return Logic.ProjectUsers{}
-}
+}*/

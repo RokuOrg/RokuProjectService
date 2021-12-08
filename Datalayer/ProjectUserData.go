@@ -1,54 +1,48 @@
 package Datalayer
 
 import (
-	"RokuProject-Back-End/Logic"
+	"RokuProject-Back-End/Models"
 	"fmt"
 	"log"
 )
 
-func AddProjectUser(projectUser Logic.ProjectUser) Logic.Message {
-	Connect()
-	defer db.Close()
+func (d *DatabaseLayer) AddProjectUser(projectUser Models.ProjectUserDAO) error {
 
-	result, err := db.Query("INSERT INTO ProjectUser (ProjectId, UserId ) VALUES (?, ?)", projectUser.ProjectId, projectUser.UserId)
+	defer d.DB.Close()
+
+	result, err := d.DB.Query("INSERT INTO ProjectUser (ProjectId, UserId ) VALUES (?, ?)", projectUser.ProjectId, projectUser.UserId)
 
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	defer result.Close()
 
-	return Logic.Message{
-		Success: true,
-		Value:   "Added projectUser",
-	}
+	return nil
 }
 
-func RemoveProjectUser(projectUser Logic.ProjectUser) Logic.Message {
-	Connect()
-	defer db.Close()
+func (d *DatabaseLayer) RemoveProjectUser(projectUser Models.ProjectUserDAO) error {
 
-	result, err := db.Query("DELETE FROM ProjectUser (ProjectId, UserId ) VALUES (?, ?)", projectUser.ProjectId, projectUser.UserId)
+	defer d.DB.Close()
+
+	result, err := d.DB.Query("DELETE FROM ProjectUser WHERE ProjectId =? AND UserId = ? ", projectUser.ProjectId, projectUser.UserId)
 
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	defer result.Close()
 
-	return Logic.Message{
-		Success: true,
-		Value:   "Deleted projectUser",
-	}
+	return nil
 }
 
-func GetProjectUser(projectUser Logic.ProjectUser) Logic.ProjectUser {
-	Connect()
-	defer db.Close()
+func (d *DatabaseLayer) GetProjectUser(projectUser Models.ProjectUserDAO) Models.ProjectUserDAO {
 
-	var User Logic.ProjectUser
+	defer d.DB.Close()
 
-	result, err := db.Query("SELECT * FROM ProjectUser WHERE ProjectId = ? AND UserId = ?", projectUser.ProjectId, projectUser.UserId)
+	var User Models.ProjectUserDAO
+
+	result, err := d.DB.Query("SELECT * FROM ProjectUser WHERE ProjectId = ? AND UserId = ?", projectUser.ProjectId, projectUser.UserId)
 
 	if err != nil {
 		log.Fatal(err)
@@ -64,21 +58,20 @@ func GetProjectUser(projectUser Logic.ProjectUser) Logic.ProjectUser {
 	return User
 }
 
-func GetProjectUsersByUserId(UserId string) Logic.ProjectUsers {
+func (d *DatabaseLayer) GetProjectUsersByUserId(UserId string) []Models.ProjectUserDAO {
 
-	Connect()
-	defer db.Close()
+	defer d.DB.Close()
 
-	var Users Logic.ProjectUsers
+	var Users []Models.ProjectUserDAO
 
-	result, err := db.Query("SELECT * FROM ProjectUser WHERE UserId = ?", UserId)
+	result, err := d.DB.Query("SELECT * FROM ProjectUser WHERE UserId = ?", UserId)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for result.Next() {
-		var User Logic.ProjectUser
+		var User Models.ProjectUserDAO
 		err := result.Scan(&User.ProjectId, &User.UserId)
 		if err != nil {
 			log.Fatal(err)
@@ -89,21 +82,19 @@ func GetProjectUsersByUserId(UserId string) Logic.ProjectUsers {
 	return Users
 }
 
-func GetAllProjectsFromUser(UserId string) Logic.ProjectUsers {
+func (d *DatabaseLayer) GetAllProjectsFromUser(UserId string) []Models.ProjectUserDAO {
+	defer d.DB.Close()
 
-	Connect()
-	defer db.Close()
+	var projectUsers []Models.ProjectUserDAO
 
-	var projectUsers Logic.ProjectUsers
-
-	result, err := db.Query("SELECT * FROM ProjectUser WHERE UserId = ?", UserId)
+	result, err := d.DB.Query("SELECT * FROM ProjectUser WHERE UserId = ?", UserId)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for result.Next() {
-		var user Logic.ProjectUser
+		var user Models.ProjectUserDAO
 
 		err := result.Scan(&user.ProjectId, &user.UserId)
 		if err != nil {

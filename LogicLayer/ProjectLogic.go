@@ -1,76 +1,6 @@
 package LogicLayer
 
-import (
-	"RokuProject-Back-End/Datalayer"
-	"RokuProject-Back-End/Logic"
-	"github.com/segmentio/ksuid"
-)
-
-func ProjectListTemplate() Logic.ProjectLists {
-
-	ProjectList := Logic.ProjectLists{
-		Logic.ProjectList{
-			Id:       ksuid.New().String(),
-			Name:     "To Do",
-			Position: 0,
-			Items:    Logic.ProjectItems{},
-		},
-		Logic.ProjectList{
-			Id:       ksuid.New().String(),
-			Name:     "In Progress",
-			Position: 1,
-			Items:    Logic.ProjectItems{},
-		},
-		Logic.ProjectList{
-			Id:       ksuid.New().String(),
-			Name:     "Done",
-			Position: 2,
-			Items:    Logic.ProjectItems{},
-		},
-	}
-
-	return ProjectList
-}
-
-func CreateProject(UserId string, ProjectName string, template bool) Logic.Message {
-
-	project := Logic.Project{
-		Name:    ProjectName,
-		Id:      ksuid.New().String(),
-		OwnerId: UserId,
-		Project: nil,
-	}
-
-	if template {
-		project.Project = ProjectListTemplate()
-	}
-
-	res := Datalayer.AddProject(project)
-
-	if !res.Success {
-		return res
-	}
-
-	for i := range project.Project {
-		res := Datalayer.AddProjectList(project.Project[i], project.Id)
-
-		if !res.Success {
-			return res
-		}
-		for j := range project.Project[i].Items {
-			res := Datalayer.AddProjectItem(project.Project[i].Items[j], project.Project[i].Id)
-
-			if !res.Success {
-				return res
-			}
-		}
-	}
-
-	res = Datalayer.AddProjectUser(Logic.ProjectUser{UserId: UserId, ProjectId: project.Id})
-
-	return res
-}
-
+/*
 func GetProjectByUser(ProjectId string, UserId string) (Logic.Project, string) {
 
 	ProjectUser := Datalayer.GetProjectUser(Logic.ProjectUser{UserId: UserId, ProjectId: ProjectId})
@@ -129,3 +59,4 @@ func GetAllProjects() Logic.Projects {
 
 	return projects
 }
+*/
