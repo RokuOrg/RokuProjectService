@@ -23,3 +23,30 @@ func (p *Project) AddProjectList() error {
 func (p *Project) AddTemplate() error {
 	return errors.New("Not implemented")
 }
+
+/*
+ProjectList := []ProjectList{
+{
+Id:       p.RandomId().String(),
+Name:     "To Do",
+Position: 0,
+Items:    []ProjectItem{},
+},
+{
+Id:       p.RandomId().String(),
+Name:     "In Progress",
+Position: 1,
+Items:    []ProjectItem{},
+},
+{
+Id:       p.RandomId().String(),
+Name:     "Done",
+Position: 2,
+Items:    []ProjectItem{},
+},
+}*/
+
+func (p *Project) CreateDefaultLists() error {
+
+	return nil
+}

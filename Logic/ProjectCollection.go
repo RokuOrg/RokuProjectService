@@ -14,32 +14,6 @@ type ProjectCollection struct {
 	RandomId  func() ksuid.KSUID
 }
 
-func (p *ProjectCollection) ProjectListTemplate() []ProjectList {
-
-	ProjectList := []ProjectList{
-		{
-			Id:       p.RandomId().String(),
-			Name:     "To Do",
-			Position: 0,
-			Items:    []ProjectItem{},
-		},
-		{
-			Id:       p.RandomId().String(),
-			Name:     "In Progress",
-			Position: 1,
-			Items:    []ProjectItem{},
-		},
-		{
-			Id:       p.RandomId().String(),
-			Name:     "Done",
-			Position: 2,
-			Items:    []ProjectItem{},
-		},
-	}
-
-	return ProjectList
-}
-
 func (p *ProjectCollection) CreateProject(UserId string, ProjectName string, template bool) error {
 	if p.DataLayer == nil {
 		return errors.New("Collection not initialized")
@@ -53,7 +27,9 @@ func (p *ProjectCollection) CreateProject(UserId string, ProjectName string, tem
 	}
 
 	if template {
-		project.Project = p.ProjectListTemplate()
+		if err := project.CreateDefaultLists(); err != nil {
+			return err
+		}
 	}
 
 	if err := p.DataLayer.AddProject(Models.ProjectDAO{Name: project.Name, Id: project.Id, OwnerId: project.OwnerId}); err != nil {

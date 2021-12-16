@@ -18,12 +18,20 @@ func TestCreateProject(t *testing.T) {
 	//mock Add project
 	//, project.Id, project.Name, project.OwnerId
 
-	rows := sqlmock.NewRows([]string{"Id", "Name", "OwnerId"})
+	ProjectRows := sqlmock.NewRows([]string{"Id", "Name", "OwnerId"})
+	ProjectListRows := sqlmock.NewRows([]string{"Id", "Name", "ProjectId", "Position"})
+	//ProjectItemRows := sqlmock.NewRows([]string{"Id", "Title", "Description", "ProjectListId", "Position"})
+	ProjectUserRows := sqlmock.NewRows([]string{"ProjectId", "UserId"})
 
-	mock.ExpectQuery("INSERT INTO Project").WithArgs(FakeRandomId().String(), "test project", "12345").WillReturnRows(rows)
+	mock.ExpectQuery("INSERT INTO Project").WithArgs(FakeRandomId().String(), "test project", "12345").WillReturnRows(ProjectRows)
+
 	//mock Add project list
-	//mock Add project items
+	mock.ExpectQuery("INSERT INTO ProjectList").WithArgs(FakeRandomId().String(), "To Do", FakeRandomId().String(), 0).WillReturnRows(ProjectListRows)
+	mock.ExpectQuery("INSERT INTO ProjectList").WithArgs(FakeRandomId().String(), "In Progress", FakeRandomId().String(), 1).WillReturnRows(ProjectListRows)
+	mock.ExpectQuery("INSERT INTO ProjectList").WithArgs(FakeRandomId().String(), "Done", FakeRandomId().String(), 2).WillReturnRows(ProjectListRows)
+
 	//mock Add Project user
+	mock.ExpectQuery("INSERT INTO ProjectUser").WithArgs(FakeRandomId().String(), "12345").WillReturnRows(ProjectUserRows)
 	defer mock.ExpectClose()
 
 	//Execute
